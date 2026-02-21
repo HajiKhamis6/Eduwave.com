@@ -98,6 +98,26 @@
         .phone-header i { font-size: 1rem; }
         .phone-header:hover { background: #e09f2c; }
 
+        /* NEW BUTTON STYLE – open O.C. link */
+        .oc-header-btn {
+            background: #9b6d3c;        /* warm brown */
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+        .oc-header-btn i { font-size: 1.1rem; color: #fadfad; }
+        .oc-header-btn:hover { background: #865a30; }
+
         /* Fix hero section */
         .hero {
             background: linear-gradient(145deg, #f1e3d3 0%, #faf4e9 80%);
@@ -309,7 +329,7 @@
             margin-top: 16px;
             width: 100%;
         }
-        .wa-contact-btn, .call-contact-btn {
+        .wa-contact-btn, .call-contact-btn, .oc-contact-btn {
             border: none;
             padding: 16px 20px;
             border-radius: 60px;
@@ -328,6 +348,13 @@
         .wa-contact-btn i { font-size: 1.4rem; }
         .call-contact-btn { background: #2c4a3b; }
         .call-contact-btn i { font-size: 1.2rem; }
+        /* NEW button style inside demo panel */
+        .oc-contact-btn {
+            background: #9b6d3c; 
+            color: white;
+        }
+        .oc-contact-btn i { color: #fadfad; }
+        .oc-contact-btn:hover { background: #865a30; }
 
         .message-area {
             margin-top: 28px; 
@@ -467,6 +494,10 @@
         <div class="container nav-container">
             <div class="logo">edu<span>wave</span></div>
             <div class="nav-actions">
+                <!-- NEW O.C. button in navbar – opens the required link -->
+                <button class="oc-header-btn" id="ocHeaderBtn">
+                    <i class="fas fa-external-link-alt"></i> Ramadhan
+                </button>
                 <a href="https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t" target="_blank" style="text-decoration: none;">
                     <button class="whatsapp-header" id="headerWhatsAppBtn">
                         <i class="fab fa-whatsapp"></i> WhatsApp
@@ -514,6 +545,10 @@
                     <input type="text" id="interest" placeholder="e.g., Data Science" value="">
                 </div>
                 <div class="contact-buttons">
+                    <!-- NEW O.C. button inside contact panel - opens required link -->
+                    <a href="https://hajikhamis6.github.io/O.C-app/" target="_blank" style="text-decoration: none; width: 100%;" id="ocLiveLink">
+                        <button class="oc-contact-btn" id="ocDemoBtn"><i class="fas fa-rocket"></i> Open O.C. app</button>
+                    </a>
                     <!-- WhatsApp live chat – real group invite with tracking -->
                     <a href="https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t" target="_blank" style="text-decoration: none; width: 100%;" id="whatsappLiveLink">
                         <button class="wa-contact-btn" id="whatsappDemoBtn"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</button>
@@ -528,7 +563,7 @@
                 <i class="fas fa-comment-dots"></i>
                 <span id="messageText">Alex, we're ready to talk about Data Science!</span>
             </div>
-            <p style="font-size:0.8rem; margin-top:14px; color:#7b6e5a;"><i class="fas fa-mobile-alt"></i> Tap WhatsApp to join group, or call us directly.</p>
+            <p style="font-size:0.8rem; margin-top:14px; color:#7b6e5a;"><i class="fas fa-mobile-alt"></i> Tap WhatsApp to join group, call directly, or try O.C. app.</p>
         </div>
     </div>
 
@@ -544,6 +579,9 @@
                         <i class="fab fa-github" id="githubLive" role="button" tabindex="0" title="GitHub (live)"></i>
                     </div>
                     <div style="margin-top:16px; display: flex; flex-direction: column; gap: 8px;">
+                        <a href="https://hajikhamis6.github.io/O.C-app/" target="_blank" class="phone-footer-link" style="background:#9b6d3c; color:white; border:none;" id="footerOCLink">
+                            <i class="fas fa-external-link-alt"></i> O.C. app
+                        </a>
                         <a href="https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t" target="_blank" class="phone-footer-link" style="background:#25D366; color:#111; border:none;">
                             <i class="fab fa-whatsapp"></i> WhatsApp group
                         </a>
@@ -614,19 +652,18 @@
             interestInput.addEventListener('input', updateMessage);
             updateMessage();
 
-            // ---------- REAL CONTACT: no alerts, only live actions ----------
+            // ---------- REAL CONTACT / BUTTONS ----------
             // Header phone button triggers tel:
             document.getElementById('phoneHeaderBtn').addEventListener('click', function() {
                 window.location.href = 'tel:+255776290901';
             });
 
-            // Demo panel phone is already wrapped in <a href="tel:">, but we also want dynamic message update.
+            // Phone demo button (inside contact panel)
             document.getElementById('phoneDemoBtn').addEventListener('click', function(e) {
-                // Let the anchor handle tel: naturally, just update message to reflect call attempt.
                 messageSpan.innerText = `Calling +255 776 290 901 for ${studentInput.value.trim() || 'you'} ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
-                // navigation to tel: will occur because parent <a href="tel:"> captures click
+                // navigation to tel: handled by parent <a>
             });
 
             // WhatsApp buttons: group link + dynamic message
@@ -637,20 +674,42 @@
                 // navigation handled by href
             }
 
-            // Attach to all WA buttons (header, demo, footer)
             document.getElementById('headerWhatsAppBtn')?.addEventListener('click', function() {
                 handleWhatsAppClick('header');
             });
             document.getElementById('whatsappDemoBtn')?.addEventListener('click', function() {
                 handleWhatsAppClick('demo');
             });
-            // footer link (already an <a> with href)
             const footerWA = document.querySelector('.phone-footer-link[href*="whatsapp"]');
             if (footerWA) {
                 footerWA.addEventListener('click', function() {
                     handleWhatsAppClick('footer');
                 });
             }
+
+            // ---------- NEW O.C. BUTTON FUNCTIONALITY ----------
+            // Header O.C. button
+            document.getElementById('ocHeaderBtn').addEventListener('click', function() {
+                window.open('https://hajikhamis6.github.io/O.C-app/', '_blank');
+                messageSpan.innerText = `Opening O.C. app for ${studentInput.value.trim() || 'you'} ...`;
+                msgBox.classList.add('highlight-green');
+                setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
+            });
+
+            // Demo panel O.C. button (id="ocDemoBtn") – inside <a> wrapper, but we add extra feedback
+            document.getElementById('ocDemoBtn')?.addEventListener('click', function() {
+                messageSpan.innerText = `Launching O.C. app – ${studentInput.value.trim() || 'enjoy'}!`;
+                msgBox.classList.add('highlight-green');
+                setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
+                // link handled by parent a tag
+            });
+
+            // Footer O.C. link
+            document.getElementById('footerOCLink')?.addEventListener('click', function() {
+                messageSpan.innerText = `Opening O.C. app from footer ...`;
+                msgBox.classList.add('highlight-green');
+                setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
+            });
 
             // Contact in footer -> WhatsApp group (live)
             document.getElementById('contactFooter')?.addEventListener('click', (e) => {
@@ -666,7 +725,7 @@
                 document.getElementById('registerDemo').scrollIntoView({ behavior: 'smooth' });
             });
 
-            // ---------- REAL SOCIAL LINKS (open official pages) ----------
+            // ---------- REAL SOCIAL LINKS ----------
             document.getElementById('twitterLive')?.addEventListener('click', () => {
                 window.open('https://twitter.com/eduverse', '_blank');
             });
@@ -677,14 +736,13 @@
                 window.open('https://github.com/eduverse', '_blank');
             });
 
-            // Footer navigation links (real anchors to internal sections / external)
+            // Footer navigation links
             document.getElementById('browseCoursesLink')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.querySelector('.course-grid').scrollIntoView({ behavior: 'smooth' });
             });
             document.getElementById('pathsLink')?.addEventListener('click', (e) => {
                 e.preventDefault();
-                // simulate learning paths – scroll to contact panel
                 document.getElementById('registerDemo').scrollIntoView({ behavior: 'smooth' });
             });
             document.getElementById('pricingLink')?.addEventListener('click', (e) => {
@@ -700,12 +758,11 @@
                 window.open('https://community.eduverse.com', '_blank');
             });
 
-            // subscribe: real email capture simulation (would send to server)
+            // subscribe: real email capture simulation
             document.getElementById('subscribeBtn').addEventListener('click', () => {
                 const email = document.getElementById('subscribeEmail').value.trim();
                 if (email && email.includes('@')) {
-                    alert(`✅ Thanks! ${email} subscribed to newsletter.`); // only alert for confirmation, but in real app this would POST.
-                    // Actually we want "real app feel" — we'll also store to localStorage to simulate
+                    alert(`✅ Thanks! ${email} subscribed to newsletter.`);
                     localStorage.setItem('eduverse_subscriber', email);
                     document.getElementById('subscribeEmail').value = '';
                 } else {
@@ -713,14 +770,13 @@
                 }
             });
 
-            // Footer phone link (already tel:), but we can add a small highlight
+            // Footer phone link (already tel:), add highlight
             document.getElementById('footerPhoneLink')?.addEventListener('click', function() {
                 messageSpan.innerText = `Dialing +255 776 290 901 ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
             });
-
         })();
     </script>
 </body>
-    </html>
+</html>
