@@ -110,8 +110,7 @@
         }
         /* Hero image replaced with Google Drive image via direct link (fits as background) */
         .hero-image {
-            min-height: 600px;
-            min-width: 100%;
+            min-height: 250px;
             background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center;
             background-size: contain;
             border-radius: 36px;
