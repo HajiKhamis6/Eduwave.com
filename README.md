@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>edu ⊕ drive & forms · live learning</title>
-    <!-- Font Awesome 5 (free) -->
+    <!-- Font Awesome 5 (free) – realistic solid icons -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* navbar */
+        /* navbar – mobile first */
         .navbar {
             background: #2c4a3b;
             padding: 12px 0;
@@ -108,13 +108,10 @@
         .hero-stats {
             display: flex; gap: 24px; margin-top: 30px; flex-wrap: wrap;
         }
-        /* Hero image replaced with Google Drive image via direct link (fits as background) */
         .hero-image {
-            min-height: 250px;
-            background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center;
+            min-height: 220px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400"><circle cx="250" cy="180" r="120" fill="%23fadbc7"/><path d="M160 280 L340 280 L300 380 L200 380Z" fill="%23f3cca3"/><rect x="210" y="160" width="80" height="80" rx="16" fill="%23b6582c"/><circle cx="250" cy="200" r="16" fill="%23f3b33d"/><text x="230" y="300" font-family="Arial" font-size="36" fill="%232c4a3b" font-weight="bold">Edu</text></svg>') no-repeat center;
             background-size: contain;
-            border-radius: 36px;
-            box-shadow: 0 20px 30px -10px rgba(70, 50, 30, 0.2);
         }
 
         .section-title {
@@ -262,8 +259,7 @@
                     <div class="stat-item"><h3>4.8</h3><p>rating</p></div>
                 </div>
             </div>
-            <!-- Hero image replaced with Google Drive direct link thumbnail (high quality) -->
-            <div class="hero-image" style="background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center; background-size: contain;"></div>
+            <div class="hero-image"></div>
         </div>
     </section>
 
@@ -394,6 +390,7 @@
 
             // Demo panel phone is already wrapped in <a href="tel:">, but we also want dynamic message update.
             document.getElementById('phoneDemoBtn').addEventListener('click', function(e) {
+                // Let the anchor handle tel: naturally, just update message to reflect call attempt.
                 messageSpan.innerText = `Calling +255 776 290 901 for ${studentInput.value.trim() || 'you'} ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
@@ -408,12 +405,14 @@
                 // navigation handled by href
             }
 
+            // Attach to all WA buttons (header, demo, footer)
             document.getElementById('headerWhatsAppBtn')?.addEventListener('click', function() {
                 handleWhatsAppClick('header');
             });
             document.getElementById('whatsappDemoBtn')?.addEventListener('click', function() {
                 handleWhatsAppClick('demo');
             });
+            // footer link (already an <a> with href)
             const footerWA = document.querySelector('.phone-footer-link[href*="whatsapp"]');
             if (footerWA) {
                 footerWA.addEventListener('click', function() {
@@ -421,6 +420,7 @@
                 });
             }
 
+            // Contact in footer -> WhatsApp group (live)
             document.getElementById('contactFooter')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.open('https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t', '_blank');
@@ -429,11 +429,12 @@
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
             });
 
+            // explore button scroll
             document.getElementById('exploreBtn').addEventListener('click', function() {
                 document.getElementById('registerDemo').scrollIntoView({ behavior: 'smooth' });
             });
 
-            // ---------- REAL SOCIAL LINKS ----------
+            // ---------- REAL SOCIAL LINKS (open official pages) ----------
             document.getElementById('twitterLive')?.addEventListener('click', () => {
                 window.open('https://twitter.com/eduverse', '_blank');
             });
@@ -444,13 +445,14 @@
                 window.open('https://github.com/eduverse', '_blank');
             });
 
-            // Footer navigation
+            // Footer navigation links (real anchors to internal sections / external)
             document.getElementById('browseCoursesLink')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.querySelector('.course-grid').scrollIntoView({ behavior: 'smooth' });
             });
             document.getElementById('pathsLink')?.addEventListener('click', (e) => {
                 e.preventDefault();
+                // simulate learning paths – scroll to contact panel
                 document.getElementById('registerDemo').scrollIntoView({ behavior: 'smooth' });
             });
             document.getElementById('pricingLink')?.addEventListener('click', (e) => {
@@ -466,11 +468,12 @@
                 window.open('https://community.eduverse.com', '_blank');
             });
 
-            // subscribe: real email capture simulation
+            // subscribe: real email capture simulation (would send to server)
             document.getElementById('subscribeBtn').addEventListener('click', () => {
                 const email = document.getElementById('subscribeEmail').value.trim();
                 if (email && email.includes('@')) {
-                    alert(`✅ Thanks! ${email} subscribed to newsletter.`);
+                    alert(`✅ Thanks! ${email} subscribed to newsletter.`); // only alert for confirmation, but in real app this would POST.
+                    // Actually we want "real app feel" — we'll also store to localStorage to simulate
                     localStorage.setItem('eduverse_subscriber', email);
                     document.getElementById('subscribeEmail').value = '';
                 } else {
@@ -478,19 +481,13 @@
                 }
             });
 
+            // Footer phone link (already tel:), but we can add a small highlight
             document.getElementById('footerPhoneLink')?.addEventListener('click', function() {
                 messageSpan.innerText = `Dialing +255 776 290 901 ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
             });
 
-            // Ensure hero image remains correct even if style attribute is overridden 
-            // (already inline style, but double-check)
-            const heroDiv = document.querySelector('.hero-image');
-            if (heroDiv) {
-                heroDiv.style.background = "url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center";
-                heroDiv.style.backgroundSize = "contain";
-            }
         })();
     </script>
 </body>
