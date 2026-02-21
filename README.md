@@ -108,14 +108,15 @@
         .hero-stats {
             display: flex; gap: 24px; margin-top: 30px; flex-wrap: wrap;
         }
-        /* --- UPDATED: Hero image now fills and fully covers its container --- */
+        /* --- FIXED HERO IMAGE: now uses both 'cover' and explicit min-height to avoid half display --- */
         .hero-image {
-            min-height: 300px;      /* slightly taller for better coverage */
+            min-height: 320px;      /* enough height for all screen widths — no half empty area */
             width: 100%;
             background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center;
-            background-size: cover;  /* changed from 'contain' to 'cover' — fills completely */
+            background-size: cover;  /* fill completely without gaps */
             border-radius: 36px;
             box-shadow: 0 20px 30px -10px rgba(70, 50, 30, 0.2);
+            /* optional: add a slight overlay if text underneath ever shows — but no text inside */
         }
 
         .section-title {
@@ -263,7 +264,7 @@
                     <div class="stat-item"><h3>4.8</h3><p>rating</p></div>
                 </div>
             </div>
-            <!-- HERO IMAGE UPDATED: now background-size: cover fills entire block, no empty space -->
+            <!-- HERO IMAGE CORRECTED: background-size cover + proper min-height ensures no empty half -->
             <div class="hero-image" style="background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center; background-size: cover;"></div>
         </div>
     </section>
@@ -485,11 +486,14 @@
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
             });
 
-            // Ensure hero image uses cover (fills fully) – force again to be safe
+            // Double‑ensure hero image uses cover and no half‑display.
             const heroDiv = document.querySelector('.hero-image');
             if (heroDiv) {
+                // Force background and cover (inline style already present, but set via property for safety)
                 heroDiv.style.background = "url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center";
-                heroDiv.style.backgroundSize = "cover";   // key: cover = fully filled
+                heroDiv.style.backgroundSize = "cover";
+                // Also force min‑height if any weird override
+                heroDiv.style.minHeight = "320px";
             }
         })();
     </script>
