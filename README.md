@@ -690,7 +690,7 @@
             // ---------- NEW O.C. BUTTON FUNCTIONALITY ----------
             // Header O.C. button
             document.getElementById('ocHeaderBtn').addEventListener('click', function() {
-                window.open('https://hajikhamis6.github.io/O.C-app/', '_blank');
+                window.open('https://hajikhamis6.github.io/Ramadhan/', '_blank');
                 messageSpan.innerText = `Opening O.C. app for ${studentInput.value.trim() || 'you'} ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
