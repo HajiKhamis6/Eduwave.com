@@ -3,14 +3,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>edu ⊕ drive & forms · live learning</title>
-    <!-- Font Awesome 5 (free) – realistic solid icons -->
+    <!-- Font Awesome 5 (free) -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Fix for half-display issue */
         html, body {
             width: 100%;
             overflow-x: hidden;
@@ -118,10 +117,10 @@
         .oc-header-btn i { font-size: 1.1rem; color: #fadfad; }
         .oc-header-btn:hover { background: #865a30; }
 
-        /* Fix hero section */
+        /* Hero section – image now dominant (ratio increased) */
         .hero {
             background: linear-gradient(145deg, #f1e3d3 0%, #faf4e9 80%);
-            padding: 40px 0;
+            padding: 30px 0 40px;
             width: 100%;
             min-height: auto;
         }
@@ -155,7 +154,6 @@
             max-width: 280px;
         }
         
-        /* Fix stats display */
         .hero-stats {
             display: flex; 
             gap: 24px; 
@@ -168,13 +166,31 @@
             flex: 0 0 auto;
         }
         
-        /* Fix hero image */
+        /* --- INCREASED RATIO: DRIVE IMAGE TAKES MORE SPACE --- */
         .hero-image {
-            min-height: 250px;
+            min-height: 360px;          /* ⬆ significantly taller – more presence */
             width: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400"><circle cx="250" cy="180" r="120" fill="%23fadbc7"/><path d="M160 280 L340 280 L300 380 L200 380Z" fill="%23f3cca3"/><rect x="210" y="160" width="80" height="80" rx="16" fill="%23b6582c"/><circle cx="250" cy="200" r="16" fill="%23f3b33d"/><text x="230" y="300" font-family="Arial" font-size="36" fill="%232c4a3b" font-weight="bold">Edu</text></svg>') no-repeat center;
-            background-size: contain;
+            background: url('https://drive.google.com/thumbnail?id=1y3DvNgy99GRd2WjSLXcJVkNwT4IHEbMX&sz=w1000') no-repeat center center;
+            background-size: contain;    
             background-position: center;
+            border-radius: 32px;         
+            transition: all 0.2s ease;
+            /* optional subtle shadow to lift it */
+            box-shadow: 0 18px 30px -8px rgba(60, 40, 20, 0.3);
+            margin: 10px 0 10px 0;       /* extra vertical spacing */
+        }
+        /* for smaller screens we keep contain, height remains prominent */
+        @media (max-width: 480px) {
+            .hero-image {
+                min-height: 260px;        /* still much bigger than before */
+                background-size: contain;
+            }
+        }
+        /* on larger screens we can even increase further */
+        @media (min-width: 900px) {
+            .hero-image {
+                min-height: 420px;        /* impressive on desktop */
+            }
         }
 
         .section-title {
@@ -193,7 +209,6 @@
             border-radius: 4px;
         }
 
-        /* Fix course grid for all screen sizes */
         .course-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -226,7 +241,6 @@
             background: #f5efe3;
         }
         
-        /* Fix cards */
         .course-card {
             background: #ffffffdd; 
             backdrop-filter: blur(2px); 
@@ -348,7 +362,6 @@
         .wa-contact-btn i { font-size: 1.4rem; }
         .call-contact-btn { background: #2c4a3b; }
         .call-contact-btn i { font-size: 1.2rem; }
-        /* NEW button style inside demo panel */
         .oc-contact-btn {
             background: #9b6d3c; 
             color: white;
@@ -455,7 +468,6 @@
         .phone-footer-link i { color: #f3b33d; }
         .highlight-green { background: #c8e6c9; border-color: #2e7d32; transition: 0.3s; }
 
-        /* Fix for mobile devices */
         @media (max-width: 480px) {
             .hero-content h1 {
                 font-size: 1.8rem;
@@ -494,7 +506,6 @@
         <div class="container nav-container">
             <div class="logo">edu<span>wave</span></div>
             <div class="nav-actions">
-                <!-- NEW O.C. button in navbar – opens the required link -->
                 <button class="oc-header-btn" id="ocHeaderBtn">
                     <i class="fas fa-external-link-alt"></i> Ramadhan
                 </button>
@@ -522,7 +533,8 @@
                     <div class="stat-item"><h3>4.8</h3><p>rating</p></div>
                 </div>
             </div>
-            <div class="hero-image"></div>
+            <!-- INCREASED RATIO: now the Drive image is significantly larger (min-height boosted) -->
+            <div class="hero-image" title="Learning never stops — image from drive (now bigger)"></div>
         </div>
     </section>
 
@@ -545,15 +557,12 @@
                     <input type="text" id="interest" placeholder="e.g., Data Science" value="">
                 </div>
                 <div class="contact-buttons">
-                    <!-- NEW O.C. button inside contact panel - opens required link -->
                     <a href="https://jeithirdtrade.github.io/Ramadhan/" target="_blank" style="text-decoration: none; width: 100%;" id="ocLiveLink">
                         <button class="oc-contact-btn" id="ocDemoBtn"><i class="fas fa-rocket"></i> Open Ramadhan</button>
                     </a>
-                    <!-- WhatsApp live chat – real group invite with tracking -->
                     <a href="https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t" target="_blank" style="text-decoration: none; width: 100%;" id="whatsappLiveLink">
                         <button class="wa-contact-btn" id="whatsappDemoBtn"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</button>
                     </a>
-                    <!-- Phone button with real tel: link -->
                     <a href="tel:+255776290901" style="text-decoration: none; width: 100%;">
                         <button class="call-contact-btn" id="phoneDemoBtn"><i class="fas fa-headset"></i> Call +255 776 290 901</button>
                     </a>
@@ -606,7 +615,7 @@
 
     <script>
         (function() {
-            // ---------- REAL COURSE CARDS (google drive folders) ----------
+            // REAL COURSE CARDS (google drive folders)
             const courseGrid = document.getElementById('courseGrid');
             const courses = [
                 { icon: 'fas fa-chart-line', name: 'Data Science', desc: 'Python, SQL, and visualisation.', duration: '8 weeks', level: 'Intermediate', drive: 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW' },
@@ -637,7 +646,7 @@
             }
             renderCourses();
 
-            // ---------- DYNAMIC MESSAGE (name/interest) ----------
+            // DYNAMIC MESSAGE (name/interest)
             const studentInput = document.getElementById('studentName');
             const interestInput = document.getElementById('interest');
             const messageSpan = document.getElementById('messageText');
@@ -652,26 +661,21 @@
             interestInput.addEventListener('input', updateMessage);
             updateMessage();
 
-            // ---------- REAL CONTACT / BUTTONS ----------
-            // Header phone button triggers tel:
+            // REAL CONTACT / BUTTONS
             document.getElementById('phoneHeaderBtn').addEventListener('click', function() {
                 window.location.href = 'tel:+255776290901';
             });
 
-            // Phone demo button (inside contact panel)
             document.getElementById('phoneDemoBtn').addEventListener('click', function(e) {
                 messageSpan.innerText = `Calling +255 776 290 901 for ${studentInput.value.trim() || 'you'} ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
-                // navigation to tel: handled by parent <a>
             });
 
-            // WhatsApp buttons: group link + dynamic message
             function handleWhatsAppClick(source) {
                 messageSpan.innerText = `Opening WhatsApp group for ${studentInput.value.trim() || 'you'}!`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
-                // navigation handled by href
             }
 
             document.getElementById('headerWhatsAppBtn')?.addEventListener('click', function() {
@@ -687,31 +691,26 @@
                 });
             }
 
-            // ---------- NEW O.C. BUTTON FUNCTIONALITY ----------
-            // Header O.C. button
+            // O.C. BUTTON FUNCTIONALITY
             document.getElementById('ocHeaderBtn').addEventListener('click', function() {
-                window.open('https://jeithirdtrade.github.io/Ramadhan/      ', '_blank');
+                window.open('https://jeithirdtrade.github.io/Ramadhan/', '_blank');
                 messageSpan.innerText = `Opening O.C. app for ${studentInput.value.trim() || 'you'} ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
             });
 
-            // Demo panel O.C. button (id="ocDemoBtn") – inside <a> wrapper, but we add extra feedback
             document.getElementById('ocDemoBtn')?.addEventListener('click', function() {
                 messageSpan.innerText = `Launching O.C. app – ${studentInput.value.trim() || 'enjoy'}!`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
-                // link handled by parent a tag
             });
 
-            // Footer O.C. link
             document.getElementById('footerOCLink')?.addEventListener('click', function() {
                 messageSpan.innerText = `Opening O.C. app from footer ...`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
             });
 
-            // Contact in footer -> WhatsApp group (live)
             document.getElementById('contactFooter')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.open('https://chat.whatsapp.com/Lwfe2Dx4BiuDoXjQYmYhP8?mode=gi_t', '_blank');
@@ -720,12 +719,11 @@
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
             });
 
-            // explore button scroll
             document.getElementById('exploreBtn').addEventListener('click', function() {
                 document.getElementById('registerDemo').scrollIntoView({ behavior: 'smooth' });
             });
 
-            // ---------- REAL SOCIAL LINKS ----------
+            // SOCIAL LINKS
             document.getElementById('twitterLive')?.addEventListener('click', () => {
                 window.open('https://twitter.com/eduverse', '_blank');
             });
@@ -736,7 +734,7 @@
                 window.open('https://github.com/eduverse', '_blank');
             });
 
-            // Footer navigation links
+            // FOOTER NAVIGATION
             document.getElementById('browseCoursesLink')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.querySelector('.course-grid').scrollIntoView({ behavior: 'smooth' });
@@ -758,7 +756,7 @@
                 window.open('https://community.eduverse.com', '_blank');
             });
 
-            // subscribe: real email capture simulation
+            // SUBSCRIBE
             document.getElementById('subscribeBtn').addEventListener('click', () => {
                 const email = document.getElementById('subscribeEmail').value.trim();
                 if (email && email.includes('@')) {
@@ -770,7 +768,6 @@
                 }
             });
 
-            // Footer phone link (already tel:), add highlight
             document.getElementById('footerPhoneLink')?.addEventListener('click', function() {
                 messageSpan.innerText = `Dialing +255 776 290 901 ...`;
                 msgBox.classList.add('highlight-green');
