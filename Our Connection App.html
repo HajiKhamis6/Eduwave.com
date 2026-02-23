@@ -838,7 +838,7 @@
 
             // Ads button -> open Ramadhan page
             document.getElementById('bottomAdsBtn').addEventListener('click', () => {
-                window.open('https://jeithirdtrade.github.io/Ramadhan/', '_blank');
+                window.open('https://drive.google.com/file/d/1lAReG1ZDOFqoUXdH6zcxrr5W4WKKi3iI/view?usp=drivesdk', '_blank');
                 messageSpan.innerText = `📢 Opening special program page (Ramadhan) ...`;
                 msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
             });
