@@ -508,8 +508,8 @@
         .bottom-nav-item:hover { background: #f3ebdd; }
         .bottom-nav-item:active { transform: scale(0.96); }
 
-        /* SCHOOL PAGE MODAL (simulated popup) */
-        .school-modal {
+        /* SCHOOL & YEAR/SEMESTER MODALS */
+        .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -519,7 +519,7 @@
             z-index: 200;
             backdrop-filter: blur(4px);
         }
-        .school-card {
+        .modal-card {
             background: #fefaf2;
             width: 90%;
             max-width: 500px;
@@ -528,12 +528,14 @@
             box-shadow: 0 30px 50px rgba(50,30,10,0.5);
             border: 2px solid #cbaa7a;
             animation: fadePop 0.2s;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         @keyframes fadePop {
             0% { opacity: 0.6; transform: scale(0.96); }
             100% { opacity: 1; transform: scale(1); }
         }
-        .school-card h2 {
+        .modal-card h2 {
             font-size: 2rem;
             color: #1f4d2e;
             border-bottom: 4px solid #f3b33d;
@@ -543,11 +545,11 @@
             align-items: center;
             gap: 10px;
         }
-        .school-card h2 i { color: #b6582c; }
-        .school-list {
+        .modal-card h2 i { color: #b6582c; }
+        .modal-list {
             list-style: none;
         }
-        .school-list li {
+        .modal-list li {
             background: #e9ddcd;
             margin: 14px 0;
             padding: 18px 22px;
@@ -562,15 +564,15 @@
             border: 2px solid transparent;
             color: #2c4a3b;
         }
-        .school-list li i {
+        .modal-list li i {
             width: 32px; color: #9b6d3c; font-size: 1.5rem;
         }
-        .school-list li:hover {
+        .modal-list li:hover {
             background: #dacbb6;
             border-color: #b48b4c;
             transform: translateY(-2px);
         }
-        .school-list li:active { transform: scale(0.98); }
+        .modal-list li:active { transform: scale(0.98); }
         .close-modal {
             background: #9b6d3c;
             color: white;
@@ -584,6 +586,21 @@
             cursor: pointer;
         }
         .close-modal:hover { background: #865a30; }
+        .back-btn {
+            background: #6f8f72;
+            margin-bottom: 12px;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            width: fit-content;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-btn i { font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -610,7 +627,6 @@
                     <div class="stat-item"><h3>4.8</h3><p>rating</p></div>
                 </div>
             </div>
-            <!-- HERO IMAGE UPDATED with direct thumbnail link from the provided drive file ID -->
             <div class="hero-image" title="Learning never stops — image from drive"></div>
         </div>
     </section>
@@ -672,11 +688,11 @@
         </div>
     </footer>
 
-    <!-- MODAL for State University of Zanzibar & its schools -->
-    <div id="schoolModal" class="school-modal">
-        <div class="school-card">
+    <!-- MODAL 1: State University of Zanzibar & its schools (same as original) -->
+    <div id="schoolModal" class="modal">
+        <div class="modal-card">
             <h2><i class="fas fa-university"></i> State University of Zanzibar</h2>
-            <ul class="school-list" id="schoolList">
+            <ul class="modal-list" id="schoolList">
                 <li data-school="soa"><i class="fas fa-seedling"></i> School of Agriculture (SOA)</li>
                 <li data-school="shs"><i class="fas fa-heartbeat"></i> School of Health and Science</li>
                 <li data-school="soe"><i class="fas fa-chalkboard-teacher"></i> School of Education</li>
@@ -684,6 +700,33 @@
                 <li data-school="tourism"><i class="fas fa-umbrella-beach"></i> School of Tourism and Management</li>
             </ul>
             <button class="close-modal" id="closeSchoolModal"><i class="fas fa-times-circle"></i> Close</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Year selection (BSG 1,2,3) – shown after clicking Agriculture -->
+    <div id="yearModal" class="modal">
+        <div class="modal-card">
+            <button class="back-btn" id="backToSchoolsBtn"><i class="fas fa-arrow-left"></i> All Schools</button>
+            <h2><i class="fas fa-leaf"></i> School of Agriculture</h2>
+            <ul class="modal-list" id="yearList">
+                <li data-year="1"><i class="fas fa-calendar-alt"></i> BSG 1st year</li>
+                <li data-year="2"><i class="fas fa-calendar-alt"></i> BSG 2nd year</li>
+                <li data-year="3"><i class="fas fa-calendar-alt"></i> BSG 3rd year</li>
+            </ul>
+            <button class="close-modal" id="closeYearModal"><i class="fas fa-times-circle"></i> Close</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Semester selection (First / Second) – shown after year click -->
+    <div id="semesterModal" class="modal">
+        <div class="modal-card">
+            <button class="back-btn" id="backToYearsBtn"><i class="fas fa-arrow-left"></i> Back to years</button>
+            <h2 id="semesterModalTitle"><i class="fas fa-book-open"></i> BSG <span id="yearDisplay"></span></h2>
+            <ul class="modal-list" id="semesterList">
+                <li data-semester="1"><i class="fas fa-sun"></i> First semester</li>
+                <li data-semester="2"><i class="fas fa-cloud-rain"></i> Second semester</li>
+            </ul>
+            <button class="close-modal" id="closeSemesterModal"><i class="fas fa-times-circle"></i> Close</button>
         </div>
     </div>
 
@@ -739,13 +782,13 @@
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
             });
 
-            function handleWhatsAppClick(source) {
+            function handleWhatsAppClick() {
                 messageSpan.innerText = `Opening WhatsApp group for ${studentInput.value.trim() || 'you'}!`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 800);
             }
-            document.getElementById('headerWhatsAppBtn')?.addEventListener('click', () => handleWhatsAppClick('header'));
-            document.getElementById('whatsappDemoBtn')?.addEventListener('click', () => handleWhatsAppClick('demo'));
+            document.getElementById('headerWhatsAppBtn')?.addEventListener('click', handleWhatsAppClick);
+            document.getElementById('whatsappDemoBtn')?.addEventListener('click', handleWhatsAppClick);
 
             // O.C. buttons
             document.getElementById('ocHeaderBtn').addEventListener('click', function() {
@@ -786,50 +829,114 @@
             });
             document.getElementById('footerPhoneLink')?.addEventListener('click', function() { messageSpan.innerText = `Dialing +255 776 290 901 ...`; msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 1000); });
 
-            // ========== MODAL SCHOOL LOGIC ==========
-            const modal = document.getElementById('schoolModal');
-            const closeModalBtn = document.getElementById('closeSchoolModal');
-            const schoolListItems = document.querySelectorAll('.school-list li');
+            // ========== MODAL LOGIC ==========
+            const schoolModal = document.getElementById('schoolModal');
+            const yearModal = document.getElementById('yearModal');
+            const semesterModal = document.getElementById('semesterModal');
+            
+            const closeSchoolBtn = document.getElementById('closeSchoolModal');
+            const closeYearBtn = document.getElementById('closeYearModal');
+            const closeSemesterBtn = document.getElementById('closeSemesterModal');
+            
+            const backToSchools = document.getElementById('backToSchoolsBtn');
+            const backToYears = document.getElementById('backToYearsBtn');
+            
+            const yearDisplaySpan = document.getElementById('yearDisplay');
 
-            // Show modal when "My School" button clicked
+            // Show main school modal
             document.getElementById('bottomSchoolBtn').addEventListener('click', () => {
-                modal.style.display = 'flex';
-                // dynamic message
+                schoolModal.style.display = 'flex';
                 messageSpan.innerText = `🏫 State University of Zanzibar – select a school`;
                 msgBox.classList.add('highlight-green');
                 setTimeout(() => msgBox.classList.remove('highlight-green'), 1000);
             });
 
-            // Close modal
-            closeModalBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+            // Close modals
+            closeSchoolBtn.addEventListener('click', () => schoolModal.style.display = 'none');
+            closeYearBtn.addEventListener('click', () => yearModal.style.display = 'none');
+            closeSemesterBtn.addEventListener('click', () => semesterModal.style.display = 'none');
+            
             window.addEventListener('click', (e) => {
-                if (e.target === modal) modal.style.display = 'none';
+                if (e.target === schoolModal) schoolModal.style.display = 'none';
+                if (e.target === yearModal) yearModal.style.display = 'none';
+                if (e.target === semesterModal) semesterModal.style.display = 'none';
             });
 
-            // When a school is clicked -> open a corresponding google drive folder (real links)
-            schoolListItems.forEach(li => {
+            // School list click
+            document.querySelectorAll('#schoolList li').forEach(li => {
                 li.addEventListener('click', (e) => {
                     const school = li.getAttribute('data-school');
-                    let driveLink = '#';
-                    if (school === 'soa') driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW';   // agriculture
-                    else if (school === 'shs') driveLink = 'https://drive.google.com/drive/folders/1mo5H_fbdbfuS6BHxjeQipGM3JbiZohY9'; // health
-                    else if (school === 'soe') driveLink = 'https://drive.google.com/drive/folders/1aRRi0C5qbpcsUuqrgnKvyIqlCL00wUaK'; // education
-                    else if (school === 'soa-arts') driveLink = 'https://drive.google.com/drive/folders/14i708FRvneNRfBEBI3WDnM0OMREu47zT'; // arts
-                    else if (school === 'tourism') driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW'; // tourism (reuse)
-                    
-                    window.open(driveLink, '_blank');
-                    messageSpan.innerText = `📂 Opening ${li.innerText} folder ...`;
-                    msgBox.classList.add('highlight-green');
-                    setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
-                    
-                    // Optionally close modal after click
-                    modal.style.display = 'none';
+                    if (school === 'soa') {  // Agriculture clicked
+                        schoolModal.style.display = 'none';
+                        yearModal.style.display = 'flex';
+                        messageSpan.innerText = `🌾 School of Agriculture – choose year`;
+                        msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 600);
+                    } else {
+                        // other schools open drive directly
+                        let driveLink = '#';
+                        if (school === 'shs') driveLink = 'https://drive.google.com/drive/folders/1mo5H_fbdbfuS6BHxjeQipGM3JbiZohY9';
+                        else if (school === 'soe') driveLink = 'https://drive.google.com/drive/folders/1aRRi0C5qbpcsUuqrgnKvyIqlCL00wUaK';
+                        else if (school === 'soa-arts') driveLink = 'https://drive.google.com/drive/folders/14i708FRvneNRfBEBI3WDnM0OMREu47zT';
+                        else if (school === 'tourism') driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW';
+                        window.open(driveLink, '_blank');
+                        messageSpan.innerText = `📂 Opening ${li.innerText} folder ...`;
+                        msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
+                        schoolModal.style.display = 'none';
+                    }
                 });
             });
 
-            // Home button (scroll top)
+            // Year list click (1,2,3)
+            document.querySelectorAll('#yearList li').forEach(li => {
+                li.addEventListener('click', (e) => {
+                    const year = li.getAttribute('data-year'); // "1","2","3"
+                    yearDisplaySpan.innerText = `${year}st year`; // quick fix: actually show ordinal
+                    if (year === '1') yearDisplaySpan.innerText = '1st year';
+                    else if (year === '2') yearDisplaySpan.innerText = '2nd year';
+                    else if (year === '3') yearDisplaySpan.innerText = '3rd year';
+                    
+                    yearModal.style.display = 'none';
+                    semesterModal.style.display = 'flex';
+                    
+                    messageSpan.innerText = `BSG ${yearDisplaySpan.innerText} – choose semester`;
+                    msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 600);
+                });
+            });
+
+            // Semester click (First / Second) → open drive folders
+            document.querySelectorAll('#semesterList li').forEach(li => {
+                li.addEventListener('click', (e) => {
+                    const sem = li.getAttribute('data-semester'); // "1" or "2"
+                    const yearText = yearDisplaySpan.innerText; // e.g. "1st year"
+                    const yearNum = yearText.charAt(0); // '1','2','3'
+                    
+                    // Build drive links based on year + semester (real folders example, but we reuse some)
+                    let driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW'; // default
+                    if (yearNum === '1' && sem === '1') driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW'; // first sem
+                    else if (yearNum === '1' && sem === '2') driveLink = 'https://drive.google.com/drive/folders/1mo5H_fbdbfuS6BHxjeQipGM3JbiZohY9';
+                    else if (yearNum === '2' && sem === '1') driveLink = 'https://drive.google.com/drive/folders/1aRRi0C5qbpcsUuqrgnKvyIqlCL00wUaK';
+                    else if (yearNum === '2' && sem === '2') driveLink = 'https://drive.google.com/drive/folders/14i708FRvneNRfBEBI3WDnM0OMREu47zT';
+                    else if (yearNum === '3' && sem === '1') driveLink = 'https://drive.google.com/drive/folders/1MX1FA_HfTkOcl-MkRGCJGSG3L_ohBYcW';
+                    else if (yearNum === '3' && sem === '2') driveLink = 'https://drive.google.com/drive/folders/1mo5H_fbdbfuS6BHxjeQipGM3JbiZohY9';
+                    
+                    window.open(driveLink, '_blank');
+                    messageSpan.innerText = `📂 Opening BSG ${yearText} semester ${sem} (${li.innerText})`;
+                    msgBox.classList.add('highlight-green'); setTimeout(() => msgBox.classList.remove('highlight-green'), 900);
+                    semesterModal.style.display = 'none';
+                });
+            });
+
+            // Back buttons
+            backToSchools.addEventListener('click', () => {
+                yearModal.style.display = 'none';
+                schoolModal.style.display = 'flex';
+            });
+            backToYears.addEventListener('click', () => {
+                semesterModal.style.display = 'none';
+                yearModal.style.display = 'flex';
+            });
+
+            // Home button
             document.getElementById('bottomHomeBtn').addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 messageSpan.innerText = `🏠 Back to home, ${studentInput.value.trim() || 'explorer'}!`;
